@@ -109,11 +109,6 @@ Write-Host "Reading from "$ConfigFolder\Config.xml""
 $SiteCode            = $Config.Settings.SiteInfo.SiteCode # Site code 
 $ProviderMachineName = $Config.Settings.SiteInfo.ServerName # SMS Provider machine name
 
-# CSV of supported hardware models for Windows 10
-#$CSVfile = "\\UHCMDPSPR04\SWDist$\HWSupportList\Windows10Hardware.csv"
-# Import the CSV of approved hardware
-#$ApprovedHardware = (Import-Csv -Path $CSVfile)
-
 # Import the ConfigurationManager.psd1 module 
 IF ((Get-Module ConfigurationManager) -eq $null) 
     {
@@ -136,22 +131,16 @@ If (((Get-Location) -split ":")[0] -eq "$SiteCode")
 
 #Read Settings from XML
 Write-Host "Reading from $XMLFile"
-#Write-Host "Reading from $XMLBldNumFile"
 [xml]$Settings = Get-Content $XMLFile -ErrorAction Stop -WarningAction Stop
-#[xml]$BuildNumbers = Get-Content $XMLBldNumFile -ErrorAction Stop -WarningAction Stop
 
-#$PSID               = $Settings.Settings.TSIDs.$WaaSBranch.PreStage
 $FeatureUpdatePkgID = $Settings.Settings.TSIDs.$WaaSBranch.FeatureUpdate
 
 Write-Host "-----------------------------------------------" -ForegroundColor Green
 Write-Host "Task Sequence IDs"                               -ForegroundColor Green
-#Write-Host "    Pre-Stage ID:      $PSID"                    -ForegroundColor Green
 Write-Host "    Feature Update ID: $FeatureUpdatePkgID"      -ForegroundColor Green
 Write-Host "-----------------------------------------------" -ForegroundColor Green
 Write-Host ""
 
-# Set the current location to be the site code.
-##Set-Location "$($SiteCode):\" #@initParams
 
 # -------------------------------------
     Write-Host "-------------------------------------"

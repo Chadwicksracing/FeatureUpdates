@@ -57,20 +57,12 @@ Write-Host "-----------------------------------------------" -ForegroundColor Cy
 # Folder Names
     # Common Folder Names
     # Root Level
-    $RootFolder = "$($SiteCode):\DeviceCollection\_OSD Collections\WaaS"
+    $RootFolder = "$($SiteCode):\DeviceCollection\WaaS"
     $FolderMask = "$($SiteCode):\DeviceCollection"
     $WaaSBranchFolderPath = "$RootFolder\$BuildNum\$WaaSBranch"
 
     # Phase 0
     $ReferenceFolderPath                                  = "$WaaSBranchFolderPath\Phase 0 - Reference"
-#    $ReferenceAppCompatFolderPath                         = "$ReferenceFolderPath\AppCompat"
-#    $ReferenceAppCompatExclusionsFolderPath               = "$ReferenceAppCompatFolderPath\Exclusions"
-#    $ReferenceAppCompatExclusionByPassFolderPath          = "$ReferenceAppCompatFolderPath\ByPass"
-#    $ReferenceAppCompatExclusionByPassGeneralFolderPath   = "$ReferenceAppCompatExclusionByPassFolderPath\General"
-#    $ReferenceAppCompatExclusionByPassScheduledFolderPath = "$ReferenceAppCompatExclusionByPassFolderPath\Scheduled"
-#    $ReferenceAppCompatExclusionByPassStagingFolderPath   = "$ReferenceAppCompatExclusionByPassFolderPath\Staging"
-#    $ReferenceAdHocFolderPath                             = "$ReferenceFolderPath\AdHoc"
-#    $ReferenceAdHocExclusionsFolderPath                   = "$ReferenceAdHocFolderPath\Exclusions"
 
     # Phase 1
     $PreAssessmentFolderPath                              = "$WaaSBranchFolderPath\Phase 1 - Pre-Assessment"
@@ -78,13 +70,13 @@ Write-Host "-----------------------------------------------" -ForegroundColor Cy
     $PreAssessmentReferenceFolderPath                     = "$PreAssessmentFolderPath\Reference"
 
     # Phase 2
-    $PreStagingFolderPath                              = "$WaaSBranchFolderPath\Phase 2 - Pre-Staging"
-    $PreStagingDeploymentsFolderPath                   = "$PreStagingFolderPath\Pre-StageDeployments"
+    $PreStagingFolderPath                                 = "$WaaSBranchFolderPath\Phase 2 - Pre-Staging"
+    $PreStagingDeploymentsFolderPath                      = "$PreStagingFolderPath\Pre-StageDeployments"
 
     # Phase 3
-    $DeploymentFolderPath                              = "$WaaSBranchFolderPath\Phase 3 - Deployment"
-    $ToastExceptionFolderPath                          = "$DeploymentFolderPath\IPUNotificationExceptions"
-    $RootDeploymentFolderPath                          = "$DeploymentFolderPath\FeatureUpdateDeployments"
+    $DeploymentFolderPath                                 = "$WaaSBranchFolderPath\Phase 3 - Deployment"
+    $ToastExceptionFolderPath                             = "$DeploymentFolderPath\IPUNotificationExceptions"
+    $RootDeploymentFolderPath                             = "$DeploymentFolderPath\FeatureUpdateDeployments"
     $ReferenceAppCompatFolderPath                         = "$DeploymentFolderPath\AppCompat"
     $ReferenceAppCompatExclusionsFolderPath               = "$ReferenceAppCompatFolderPath\Exclusions"
     $ReferenceAppCompatExclusionByPassFolderPath          = "$ReferenceAppCompatFolderPath\ByPass"
@@ -107,12 +99,8 @@ Write-Host "-----------------------------------------------" -ForegroundColor Cy
     $InelligibleOSW7CollectionName          = "$Phase0`_01_Ineligible-OS-Windows7"
     $InelligibleOSW10CurrentCollectionName  = "$Phase0`_02_Ineligible-OS-Windows10-CurrentBuild"
     $InelligibleUnSupportedHWCollectionName = "$Phase0`_03_Ineligible-UnsupportedHardware"
-#    $ExclusionsAppCompatName                = "$Phase0`_04_Exclusions-AllAppCompat"
-#    $ExclusionsAdHocName                    = "$Phase0`_05_Exclusions-AdHoc"
     $AllSuppHWCollectionName                = "$Phase0`_98_AllSupportedHardware"
     $PassedScrutineeringName                = "$Phase0`_99_PassedScrutineering"
-#    $ByPassGeneralAppCompatCollectionName   = "$Phase0`_Exclusions_Rollup [Bypass - General]"
-#    $ByPassScheduleAppCompatCollectionName  = "$Phase0`_Exclusions_Rollup [Bypass - Scheduled]"
 
     # Phase 1
     $ReadyForPreAssessmentCollectionName   = "$Phase1`_00_ReadyforPreAssessment"
@@ -127,27 +115,27 @@ Write-Host "-----------------------------------------------" -ForegroundColor Cy
     $PreAssessmentRemediateWSOutdatedHWInvCollectionName     = "$Phase1`_Remediation_WorkstationOutdatedHWInventory"
 
     # Phase 2
-    $ReadyForPreStagingCollectionName   = "$Phase2`_00_ReadyforPreStaging"
-    $PreStagingDeploymentCollectionName   = "$Phase2`_01_PreStaging"
-    $FailedPreStagingCollectionName   = "$Phase2`_50_FailedPreStaging"
+    $ReadyForPreStagingCollectionName           = "$Phase2`_00_ReadyforPreStaging"
+    $PreStagingDeploymentCollectionName         = "$Phase2`_01_PreStaging"
+    $FailedPreStagingCollectionName             = "$Phase2`_50_FailedPreStaging"
     $PreStagingCWDbSecurityHoldCollectionName   = "$Phase2`_60_CWDbSecurityHold"
-    $PassedPreStagingCollectionName   = "$Phase2`_99_PassedPreStaging"
+    $PassedPreStagingCollectionName             = "$Phase2`_99_PassedPreStaging"
 
     # Phase 3
-    $ReadyForDeploymentCollectionName   = "$Phase3`_00_ReadyforDeployment"
-    $AutomatedDeploymentCollectionName  = "$Phase3`_01_AutomatedDeployment"
-    $ManualDeploymentCollectionName     = "$Phase3`_02_ManualDeployment"
-    $FailedDeploymentCollectionName     = "$Phase3`_50_FailedDeployment"
-    $PassedDeploymentCollectionName     = "$Phase3`_99_PassedDeployment"
-    $ToastExceptionCollectionName       = "$Phase3`_Exception_AllNotifications"
-    $GreenITCollectionName              = "$Phase3`_Exception_GreenITMachines"
+    $ReadyForDeploymentCollectionName       = "$Phase3`_00_ReadyforDeployment"
+    $AutomatedDeploymentCollectionName      = "$Phase3`_01_AutomatedDeployment"
+    $ManualDeploymentCollectionName         = "$Phase3`_02_ManualDeployment"
+    $FailedDeploymentCollectionName         = "$Phase3`_50_FailedDeployment"
+    $PassedDeploymentCollectionName         = "$Phase3`_99_PassedDeployment"
+    $ToastExceptionCollectionName           = "$Phase3`_Exception_AllNotifications"
+    $GreenITCollectionName                  = "$Phase3`_Exception_GreenITMachines"
     $ExclusionsAppCompatName                = "$Phase3`_10_Exclusions-AllAppCompat"
     $ExclusionsAdHocName                    = "$Phase3`_11_Exclusions-AdHoc"
     $ByPassGeneralAppCompatCollectionName   = "$Phase3`_Exclusions_Rollup [Bypass - General]"
     $ByPassScheduleAppCompatCollectionName  = "$Phase3`_Exclusions_Rollup [Bypass - Scheduled]"
     # AdHoc Exclusions
-    $AdHocExclusionARLICollectionName      =  "$Phase3`_Exclusions_ARLI Mode"
-    $AdHocExclusionFLEXCollectionName      =  "$Phase3`_Exclusions_FLEX Mode"
+    $AdHocExclusionARLICollectionName       =  "$Phase3`_Exclusions_ARLI Mode"
+    $AdHocExclusionFLEXCollectionName       =  "$Phase3`_Exclusions_FLEX Mode"
 
 
 

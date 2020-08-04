@@ -28,10 +28,11 @@
     Possible values are: 1809 | 1909 | 2004 | 20H2
 .PARAMETER Phase
     The WaaS phase to build out
-    Possible values are: 0 | 1 | 2
+    Possible values are: 0 | 1 | 2 | 3
         Phase 0 - Reference
         Phase 1 - Pre-Assessment
         Phase 2 - Pre-Staging
+        Phase 3 - Feature Updates
 .NOTES
 
 .EXAMPLE
@@ -104,7 +105,7 @@ $SiteCode            = $Config.Settings.SiteInfo.SiteCode # Site code
 $ProviderMachineName = $Config.Settings.SiteInfo.ServerName # SMS Provider machine name
 
 # CSV of supported hardware models for Windows 10
-$CSVfile = "\\UHCMDPSPR04\SWDist$\HWSupportList\Windows10Hardware.csv"
+$CSVfile = "$ConfigFolder\Windows10Hardware.csv"
 # Import the CSV of approved hardware
 $ApprovedHardware = (Import-Csv -Path $CSVfile)
 
@@ -178,16 +179,6 @@ Set-Location "$($SiteCode):\" #@initParams
             Write-Host "Creating the Phase 0 - Reference Folders"
             # Reference Collections Folder
             New-CMFolder -Folder "$ReferenceFolderPath"
-#            # AppCompat Folder Tree
-#            New-CMFolder -Folder "$ReferenceAppCompatFolderPath"
-#            New-CMFolder -Folder "$ReferenceAppCompatExclusionsFolderPath"
-#            New-CMFolder -Folder "$ReferenceAppCompatExclusionByPassFolderPath"
-#            New-CMFolder -Folder "$ReferenceAppCompatExclusionByPassGeneralFolderPath"
-#            New-CMFolder -Folder "$ReferenceAppCompatExclusionByPassScheduledFolderPath"
-#            New-CMFolder -Folder "$ReferenceAppCompatExclusionByPassStagingFolderPath"
-#            New-CMFolder -Folder "$ReferenceAdHocFolderPath"
-#            New-CMFolder -Folder "$ReferenceAdHocExclusionsFolderPath"
-            
             Write-Host "-------------------------------------------------------------------------"
         }
 
@@ -277,7 +268,7 @@ Set-Location "$($SiteCode):\" #@initParams
                 # Starting Point
                 Write-Host "-------------------------------------"
                 $Schedule = New-CMSchedule -RecurInterval Days -RecurCount 1 -Start "12:30 AM"
-                New-Collection -CollectionName "$StartingPointCollectionName" -LimitingCollectionName "All Systems w/ exclusions" -FolderPath "$ReferenceFolderPath" -RefreshType "Scheduled"
+                New-Collection -CollectionName "$StartingPointCollectionName" -LimitingCollectionName "All Systems" -FolderPath "$ReferenceFolderPath" -RefreshType "Scheduled"
                 Write-Host " "
 
                 # Ineligible - Windows 7
@@ -352,58 +343,6 @@ Set-Location "$($SiteCode):\" #@initParams
                     New-QueryRule -CollectionName "$InelligibleUnSupportedHWCollectionName"
                 Write-Host " "
 
-<#
-                # Exclusions - AdHoc (Rollup)
-                Write-Host "-------------------------------------"
-                New-Collection -CollectionName "$ExclusionsAdHocName" -LimitingCollectionName "$StartingPointCollectionName" -FolderPath "$ReferenceFolderPath" -RefreshType "Manual"
-                # Generate the path within the console for the query statement
-                    $tmpFolder = $NULL
-                    $tmpFolder = $ReferenceAdHocExclusionsFolderPath.Substring($($FolderMask.Length))
-                    $consolepath = $NULL
-                    $consolepath = ( $tmpFolder.Replace("\","/") )
-                    $RuleName = "[$BuildNum] Object Path Query"
-                    $QueryExpression = "select SMS_R_SYSTEM.ResourceID,SMS_R_SYSTEM.ResourceType,SMS_R_SYSTEM.Name,SMS_R_SYSTEM.SMSUniqueIdentifier,SMS_R_SYSTEM.ResourceDomainORWorkgroup,SMS_R_SYSTEM.Client from SMS_R_System where SMS_R_System.ResourceId in (select ResourceID from sms_fullcollectionmembership where collectionID in (select CollectionID from SMS_Collection where ObjectPath = '$($consolepath)'))"
-                    New-QueryRule -CollectionName "$ExclusionsAdHocName"
-                Write-Host ""
-
-                # AppCompat Exclusion ByPass Rollups
-                Write-Host "-------------------------------------"
-                New-Collection -CollectionName "$ByPassGeneralAppCompatCollectionName" -LimitingCollectionName "$StartingPointCollectionName" -FolderPath "$ReferenceAppCompatExclusionByPassFolderPath" -RefreshType "Manual"
-                # Generate the path within the console for the query statement
-                    $tmpFolder = $NULL
-                    $tmpFolder = $ReferenceAppCompatExclusionByPassGeneralFolderPath.Substring($($FolderMask.Length))
-                    $consolepath = $NULL
-                    $consolepath = ( $tmpFolder.Replace("\","/") )
-                    $RuleName = "[$BuildNum] Object Path Query"
-                    $QueryExpression = "select SMS_R_SYSTEM.ResourceID,SMS_R_SYSTEM.ResourceType,SMS_R_SYSTEM.Name,SMS_R_SYSTEM.SMSUniqueIdentifier,SMS_R_SYSTEM.ResourceDomainORWorkgroup,SMS_R_SYSTEM.Client from SMS_R_System where SMS_R_System.ResourceId in (select ResourceID from sms_fullcollectionmembership where collectionID in (select CollectionID from SMS_Collection where ObjectPath = '$($consolepath)'))"
-                    New-QueryRule -CollectionName "$ByPassGeneralAppCompatCollectionName"
-                Write-Host "-------------------------------------"
-                New-Collection -CollectionName "$ByPassScheduleAppCompatCollectionName" -LimitingCollectionName "$StartingPointCollectionName" -FolderPath "$ReferenceAppCompatExclusionByPassFolderPath" -RefreshType "Manual"
-                    $tmpFolder = $NULL
-                    $tmpFolder = $ReferenceAppCompatExclusionByPassScheduledFolderPath.Substring($($FolderMask.Length))
-                    $consolepath = $NULL
-                    $consolepath = ( $tmpFolder.Replace("\","/") )
-                    $RuleName = "[$BuildNum] Object Path Query"
-                    $QueryExpression = "select SMS_R_SYSTEM.ResourceID,SMS_R_SYSTEM.ResourceType,SMS_R_SYSTEM.Name,SMS_R_SYSTEM.SMSUniqueIdentifier,SMS_R_SYSTEM.ResourceDomainORWorkgroup,SMS_R_SYSTEM.Client from SMS_R_System where SMS_R_System.ResourceId in (select ResourceID from sms_fullcollectionmembership where collectionID in (select CollectionID from SMS_Collection where ObjectPath = '$($consolepath)'))"
-                    New-QueryRule -CollectionName "$ByPassScheduleAppCompatCollectionName"
-                Write-Host " "
-
-                # Exclusions - AppCompat (Rollup)
-                Write-Host "-------------------------------------"
-                New-Collection -CollectionName "$ExclusionsAppCompatName" -LimitingCollectionName "$StartingPointCollectionName" -FolderPath "$ReferenceFolderPath" -RefreshType "Manual"
-                # Generate the path within the console for the query statement
-                    $tmpFolder = $NULL
-                    $tmpFolder = $ReferenceAppCompatExclusionsFolderPath.Substring($($FolderMask.Length))
-                    $consolepath = $NULL
-                    $consolepath = ( $tmpFolder.Replace("\","/") )
-                    $RuleName = "[$BuildNum] Object Path Query"
-                    # Pull the needed Collection IDs for the query
-                    $ByPassGeneralAppCompatCollectionID          = (Get-CMDeviceCollection -Name $ByPassGeneralAppCompatCollectionName).CollectionID
-                    $ByPassScheduleAppCompatCollectionID         = (Get-CMDeviceCollection -Name $ByPassScheduleAppCompatCollectionName).CollectionID
-                    $QueryExpression = "select SMS_R_SYSTEM.ResourceID,SMS_R_SYSTEM.ResourceType,SMS_R_SYSTEM.Name,SMS_R_SYSTEM.SMSUniqueIdentifier,SMS_R_SYSTEM.ResourceDomainORWorkgroup,SMS_R_SYSTEM.Client from SMS_R_System where SMS_R_System.ResourceId in (select ResourceID from sms_fullcollectionmembership where collectionID in (select CollectionID from SMS_Collection where ObjectPath = '$($consolepath)')) and SMS_R_System.ResourceId not in (select ResourceID from SMS_CM_RES_COLL_$ByPassGeneralAppCompatCollectionID) and SMS_R_System.ResourceId not in (select ResourceID from SMS_CM_RES_COLL_$ByPassScheduleAppCompatCollectionID)"
-                    New-QueryRule -CollectionName "$ExclusionsAppCompatName"
-                Write-Host ""
-#>
 
                 # Passed Scrutineering
                 Write-Host "-------------------------------------"
@@ -414,9 +353,6 @@ Set-Location "$($SiteCode):\" #@initParams
                     $InelligibleOSW7CollectionID          = (Get-CMDeviceCollection -Name $InelligibleOSW7CollectionName).CollectionID
                     $InelligibleOSW10CurrentCollectionID  = (Get-CMDeviceCollection -Name $InelligibleOSW10CurrentCollectionName).CollectionID
                     $InelligibleUnSupportedHWCollectionID = (Get-CMDeviceCollection -Name $InelligibleUnSupportedHWCollectionName).CollectionID
-#                    $ExclusionsAppCompatID                = (Get-CMDeviceCollection -Name $ExclusionsAppCompatName).CollectionID
-#                    $ExclusionsAdHocID                    = (Get-CMDeviceCollection -Name $ExclusionsAdHocName).CollectionID
-#                    $QueryExpression = "select SMS_R_SYSTEM.ResourceID,SMS_R_SYSTEM.ResourceType,SMS_R_SYSTEM.Name,SMS_R_SYSTEM.SMSUniqueIdentifier,SMS_R_SYSTEM.ResourceDomainORWorkgroup,SMS_R_SYSTEM.Client from SMS_R_System where SMS_R_System.ResourceId not in (select ResourceID from SMS_CM_RES_COLL_$InelligibleOSW7CollectionID) and SMS_R_System.ResourceId not in (select ResourceID from SMS_CM_RES_COLL_$InelligibleOSW10CurrentCollectionID) and SMS_R_System.ResourceId not in (select ResourceID from SMS_CM_RES_COLL_$InelligibleUnSupportedHWCollectionID) and SMS_R_System.ResourceId not in (select ResourceID from SMS_CM_RES_COLL_$ExclusionsAppCompatID) and SMS_R_System.ResourceId not in (select ResourceID from SMS_CM_RES_COLL_$ExclusionsAdHocID)"
                     $QueryExpression = "select SMS_R_SYSTEM.ResourceID,SMS_R_SYSTEM.ResourceType,SMS_R_SYSTEM.Name,SMS_R_SYSTEM.SMSUniqueIdentifier,SMS_R_SYSTEM.ResourceDomainORWorkgroup,SMS_R_SYSTEM.Client from SMS_R_System where SMS_R_System.ResourceId not in (select ResourceID from SMS_CM_RES_COLL_$InelligibleOSW7CollectionID) and SMS_R_System.ResourceId not in (select ResourceID from SMS_CM_RES_COLL_$InelligibleOSW10CurrentCollectionID) and SMS_R_System.ResourceId not in (select ResourceID from SMS_CM_RES_COLL_$InelligibleUnSupportedHWCollectionID)"
                     New-QueryRule -CollectionName "$PassedScrutineeringName"
                 Write-Host " "
