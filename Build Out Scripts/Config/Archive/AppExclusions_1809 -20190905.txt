@@ -1,0 +1,21 @@
+Aria 13.6 MR4.1
+AutoCAD 2014 x86
+Cochlear CI Studio 2.0.2
+Cochlear SCLIN2000 1.08
+ConexSys Hi-IQ 2010 1.0
+CounterPoint
+exacqVision 6.2
+Glance 2.7.7
+Mediware WORx 4.3
+Minitab 16.2
+Omnicell WorkFlowRx 8.1
+OMNIS7 - Ped Card
+PacsGear PacsScan 4.0
+PeerVue Monitor 7.6.1.108
+RALS Remote Connect (RRC) Version 2.0-PED
+RALS Remote Connect (RRC) Version 2.0-UH
+Siemens syngo Dynamics VA10A-RADPRD
+Siemens syngo Dynamics VA10B HF06
+Sysmex WAM 4.1
+Vidyo Desktop 3.6.3.014
+WJIII Compuscore 3.0

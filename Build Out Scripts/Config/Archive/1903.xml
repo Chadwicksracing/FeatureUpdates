@@ -1,0 +1,25 @@
+<Settings>
+    <TSIDs>
+	    <DEV>
+            <Toast>MM1007BA</Toast>
+            <CompatScan>MM1007AA</CompatScan>
+            <IPU>MM1007AB</IPU>
+	    </DEV>
+	    <QA>
+            <Toast>MM1007BA</Toast>
+            <CompatScan>MM1007AA</CompatScan>
+            <IPU>MM1007AB</IPU>
+	    </QA>
+	    <PILOT>
+            <Toast>MM1007BA</Toast>
+            <CompatScan>MM1007AA</CompatScan>
+            <IPU>MM1007AB</IPU>
+	    </PILOT>
+	    <PROD>
+            <Toast>MM1007BA</Toast>
+            <CompatScan>MM1007AA</CompatScan>
+            <IPU>MM1007AB</IPU>
+	    </PROD>            
+    </TSIDs>
+    <PreviousBuilds>1507,1511,1607,1703,1709,1803,1809</PreviousBuilds>
+</Settings>
